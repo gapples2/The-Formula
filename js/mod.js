@@ -1,9 +1,9 @@
 let modInfo = {
-	name: "The Formula",
+	name: "The Formula NG-",
 	id: "formula_tree_game",
-	author: "Jacorb90",
+	author: "original: Jacorb90, ng-: gapples2",
 	pointsName: "time",
-	modFiles: ["layers/a.js", "layers/b.js", "layers/goals.js", "tree.js"],
+	modFiles: ["layers/a.js", "layers/b.js", "layers/c.js", "layers/goals.js", "layers/exponent.js", "layers/refactor.js", "tree.js"],
 
 	discordName: "",
 	discordLink: "",
@@ -12,12 +12,18 @@ let modInfo = {
 }
 
 function displayFormula() {
-	let f = "t"
-	if (player.b.unlocked) f = "t<sup>(b + 1)</sup>"
+	let f = "(t"
+	if (player.b.unlocked) f = "(t<sup>(b + 1)</sup>"
 
-	f += " × a";
-	if (hasAchievement("goals", 15)) f += " × Goals";
+	f += " × a)<sup>exp</sup>";
+	if (hasAchievement("goals", 15)) f=f.replace(")<sup>"," × Goals)<sup>");
 	return f;
+}
+
+function displayOtherFormula(){
+	let f = "(("+(tmp.goals.unlocks>=3?"r":"0.5")+" - exp + 1)<sup>10</sup>)<sup>2</sup>"
+
+	return f
 }
 
 function calculateValue(t) {
@@ -25,7 +31,7 @@ function calculateValue(t) {
 
 	let val = player.a.value.times(t);
 	if (hasAchievement("goals", 15)) val = val.times(tmp.goals.achsCompleted);
-	return val;
+	return val.pow(0.5);
 }
 
 function updateValue() {
@@ -39,12 +45,18 @@ let VERSION = {
 }
 
 let changelog = `<h1>Changelog:</h1><br><br>
-	<h3>v0.1 - Learning Our Letters</h3><br>
+	<h3>v0.1 NG= - Learning Our Letters</h3><br>
 		- Set up basic stuff.<br>
 		- Implemented A-Power & Avolve<br>
 		- Implemented Goals<br>
 		- Implemented B-Power & Batteries<br>
-		- Balanced up to 19 Goals completed<br>`
+		- Balanced up to 19 Goals completed<br><br>
+	<h3>v0.1 NG- - No More Jacorb Balancing</h3><br>
+		- Implemented Exponent-Power<br>
+		- Implemented Refactored Timespeed<br>
+		- Implemented C-Power<br>
+		- Edited a few goals
+		`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
@@ -70,6 +82,7 @@ function getTimeSpeed() {
 		if (p.gte(75)) p = p.times(5625).cbrt();
 		spd = spd.times(Decimal.sub(5, p.max(10).sub(10).div(20)).max(1));
 	}
+	spd=spd.times(layers.ex.timespeedBoost())
 	return spd;
 }
 

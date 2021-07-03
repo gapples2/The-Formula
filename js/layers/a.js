@@ -68,7 +68,7 @@ addLayer("a", {
         if (hasAchievement("goals", 23)) f += " × (b ÷ 4 + 1)"
         if (hasAchievement("goals", 33)) f += " × Goals"
         if (tmp[this.layer].addedValue.gt(0)) f += " + "+format(tmp[this.layer].addedValue)
-        return f;
+        return "("+f+")<sup>exp</sup>";
     },
     calculateValue(A=player[this.layer].points) {
         let val = A;
@@ -81,7 +81,7 @@ addLayer("a", {
         if (hasAchievement("goals", 23)) val = val.times(player.b.value.div(4).plus(1));
         if (hasAchievement("goals", 33)) val = val.times(tmp.goals.achsCompleted);
         if (tmp[this.layer].addedValue.gt(0)) val = val.plus(tmp[this.layer].addedValue);
-        return val;
+        return val.pow(0.5);
     },
     update(diff) {
         player[this.layer].value = tmp[this.layer].calculateValue
@@ -96,7 +96,7 @@ addLayer("a", {
                 let div = buyableEffect(this.layer, 11);
                 return div;
             },
-            req() { return Decimal.pow(5, player[this.layer].avolve.plus(1)).times(10).div(tmp[this.layer].bars.Avolve.reqDiv) },
+            req() { return Decimal.pow(3, player[this.layer].avolve.plus(1)).times(10).div(tmp[this.layer].bars.Avolve.reqDiv) },
             progress() { return player.value.div(tmp[this.layer].bars.Avolve.req) },
             unlocked() { return tmp.goals.unlocks>=1 },
             display() { return "Req: n(t) ≥ "+formatWhole(tmp[this.layer].bars.Avolve.req)+" ("+format(100-tmp[this.layer].bars.Avolve.progress)+"%)" },
@@ -119,7 +119,7 @@ addLayer("a", {
                 if (hasAchievement("goals", 34) && tmp.b.batteriesUnl) eff = eff.times(gridEffect("b", 103));
                 return eff;
             },
-            cost(x=player[this.layer].buyables[this.id]) { return Decimal.pow(1.5, x).times(5).plus(10).ceil() },
+            cost(x=player[this.layer].buyables[this.id]) { return Decimal.pow(1.2, x).times(5).plus(4).ceil() },
             display() { return "Cost: "+formatWhole(tmp[this.layer].buyables[this.id].cost)+" A-Power" },
             canAfford() { return player[this.layer].points.gte(layers[this.layer].buyables[this.id].cost()) },
             buy() { 
@@ -151,4 +151,11 @@ addLayer("a", {
             "z-index": "0",
         },
     },
+    doReset(layer){
+        if(layers[layer].row>layers[this.layer].row){
+            let keep = []
+            if(hasMilestone("re",2)&&layer=="ex")keep.push("avolve")
+            layerDataReset("a",keep)
+        }
+    }
 })

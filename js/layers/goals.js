@@ -31,8 +31,12 @@ addLayer("goals", {
                     req: 7,
                 },
                 {
+                    desc: "Unlock Refactored Timespeed",
+                    req: 10,
+                },
+                {
                     desc: "Unlock Batteries",
-                    req: 12,
+                    req: 15,
                 },
             ],
             retrieveUnlockData() { return tmp[this.layer].buyables[11].unlockData[player[this.layer].buyables[11].toNumber()] },
@@ -65,15 +69,15 @@ addLayer("goals", {
             unlocked() { return true },
         },
         12: {
-            name: "Fake Timewall",
-            done() { return player.value.gte(50) },
-            tooltip: "Make n(t) ≥ 50.",
+            name: "Extra Nerfed",
+            done() { return player.ex.value.lte(0.45) },
+            tooltip: "Make exp(e) ≤ 0.45.",
             unlocked() { return hasAchievement(this.layer, 11) }
         },
         13: {
             name: "Speedy Recovery",
-            done() { return player.a.points.gte(10) },
-            tooltip: "Reach 10 A-Power. Reward: Increase <span style='font-size: 17.5px;'>a</span> by 0.5.",
+            done() { return player.a.points.gte(8) },
+            tooltip: "Reach 8 A-Power. Reward: Increase <span style='font-size: 17.5px;'>a</span> by 0.5.",
             unlocked() { return hasAchievement(this.layer, 11) }
         },
         14: {
@@ -84,8 +88,8 @@ addLayer("goals", {
         },
         15: {
             name: "A To the Extreme",
-            done() { return player.a.value.gte(100) },
-            tooltip: "Make a(A) ≥ 100. Reward: Completed Goals multiply <span style='font-size: 17.5px;'>n(t)</span>.",
+            done() { return player.a.value.gte(6) },
+            tooltip: "Make a(A) ≥ 6. Reward: Completed Goals multiply <span style='font-size: 17.5px;'>n(t)</span>.",
             unlocked() { return tmp[this.layer].unlocks>=1 },
         },
         16: {
@@ -102,14 +106,14 @@ addLayer("goals", {
         },
         22: {
             name: "I Feel Strong",
-            done() { return player.a.points.gte(40) },
-            tooltip: "Reach 40 A-Power. Reward: The A-Power requirement base is decreased by 0.1.",
+            done() { return player.a.points.gte(30) },
+            tooltip: "Reach 30 A-Power. Reward: The A-Power requirement base is decreased by 0.1.",
             unlocked() { return hasAchievement("goals", 15) }
         },
         23: {
-            name: "Billionaire!",
-            done() { return player.value.gte(1e9) },
-            tooltip: "Make n(t) ≥ 1e9. Reward: <span style='font-size: 17.5px;'>b</span> boosts <span style='font-size: 17.5px;'>a</span> at a reduced rate.",
+            name: "A few thousands",
+            done() { return player.value.gte(1e5) },
+            tooltip: "Make n(t) ≥ 100,000. Reward: <span style='font-size: 17.5px;'>b</span> boosts <span style='font-size: 17.5px;'>a</span> at a reduced rate.",
             unlocked() { return tmp[this.layer].unlocks>=2 },
         },
         24: {
@@ -127,7 +131,7 @@ addLayer("goals", {
         26: {
             name: "Darwin had it right",
             done() { return player.a.avolve.gte(20) },
-            tooltip: "Reach Avolve Level 20. Reward: Getting A-Power resets nothing.",
+            tooltip: "Reach Avolve Level 20.",
             unlocked() { return hasAchievement("goals", 21) },
         },
         31: {
@@ -144,8 +148,8 @@ addLayer("goals", {
         },
         33: {
             name: "A To the More Extreme",
-            done() { return player.a.value.gte(1.5e6) },
-            tooltip: "Make a(A) ≥ 1,500,000. Reward: Completed Goals boost <span style='font-size: 17.5px;'>a</span>.",
+            done() { return player.a.value.gte(1000) },
+            tooltip: "Make a(A) ≥ 1,000. Reward: Completed Goals boost <span style='font-size: 17.5px;'>a</span>.",
             unlocked() { return tmp[this.layer].unlocks>=3 },
         },
         34: {
@@ -156,8 +160,8 @@ addLayer("goals", {
         },
         35: {
             name: "Am I Strong?",
-            done() { return player.a.points.gte(300) },
-            tooltip: "Reach 300 A-Power. Reward: The B-Power base is halved.",
+            done() { return player.c.value.gte(2) },
+            tooltip: "Make c(C) ≥ 2. Reward: The B-Power base is halved.",
             unlocked() { return hasAchievement("goals", 31) }
         },
         36: {
@@ -167,9 +171,9 @@ addLayer("goals", {
             unlocked() { return hasAchievement("goals", 31) },
         },
         41: {
-            name: "The Sub-Infinite Sum",
-            done() { return player.value.gte(1e40) && player.a.value.gte(6.98e8) },
-            tooltip: "Make n(t) ≥ 1e40 & a(A) ≥ 698,000,000. Reward: TBA ;)",
+            name: "Extra Nice",
+            done() { return player.a.avolve.gte(69) },
+            tooltip: "Reach Avolve level 69. Reward: TBA",
             unlocked() { return hasAchievement("goals", 34) }
         },
     },
@@ -184,4 +188,13 @@ addLayer("goals", {
             "border-radius": "5%",
         },
     },
+    doReset(layer){
+        if(layer=="re"){
+            let save = []
+
+            if(hasMilestone("re",0))save=[11,12,13,14,15,16]
+
+            player.goals.achievements=save
+        }
+    }
 })

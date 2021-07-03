@@ -13,14 +13,14 @@ addLayer("b", {
     baseResource: "n", 
     baseAmount() {return player.value}, 
     type: "custom",
-    requires() { return new Decimal(5e4) },
+    requires() { return new Decimal(555) },
     reqDiv() { 
         let div = new Decimal(1);
         if (tmp[this.layer].batteriesUnl) div = div.times(gridEffect(this.layer, 101));
         return div;
     },
     base() {
-        let base = new Decimal(200);
+        let base = new Decimal(50);
         if (hasAchievement("goals", 35)) base = base.div(2);
         return base;
     },
@@ -70,17 +70,19 @@ addLayer("b", {
     displayFormula() {
         let f = "B";
         if (tmp[this.layer].addedValue.gt(0)) f += " + "+format(tmp[this.layer].addedValue)
-        return f;
+        if(player.c.unlocked) f += " × (c ÷ 2 + 1)"
+        return "("+f+")<sup>exp</sup>";
     },
     calculateValue(B=player[this.layer].points) {
         let val = B;
         if (tmp[this.layer].addedValue.gt(0)) val = val.plus(tmp[this.layer].addedValue);
-        return val;
+        if(player.c.unlocked)val=val.times(player.c.value.div(2).add(1))
+        return val.pow(player.ex.value);
     },
     update(diff) {
         player[this.layer].value = tmp[this.layer].calculateValue
     },
-    batteriesUnl() { return tmp.goals.unlocks>=3 },
+    batteriesUnl() { return tmp.goals.unlocks>=4 },
     batteryEffectTypes: {
         101: "Divides the costs of A-Power & B-Power",
         102: "Multiplies B-Power's boost to effective A-Power",
@@ -136,4 +138,12 @@ addLayer("b", {
             "border-radius": "5%",
         },
     },
+    branches: ["ex"],
+    doReset(layer){
+        if(layers[layer].row>layers[this.layer].row){
+            keep=[]
+            if(hasMilestone("re",1)&&layer=="ex")keep.push("points")
+            layerDataReset("b",keep)
+        }
+    }
 })
