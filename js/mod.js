@@ -15,7 +15,7 @@ function displayFormula() {
 	let f = "(t"
 	if (player.b.unlocked) f = "(t<sup>(b + 1)</sup>"
 
-	f += " × a)<sup>exp</sup>";
+	f += " × a)<sup>"+(player.ex.unlocked?"exp":0.5)+"</sup>";
 	if (hasAchievement("goals", 15)) f=f.replace(")<sup>"," × Goals)<sup>");
 	return f;
 }
@@ -55,7 +55,9 @@ let changelog = `<h1>Changelog:</h1><br><br>
 		- Implemented Exponent-Power<br>
 		- Implemented Refactored Timespeed<br>
 		- Implemented C-Power<br>
-		- Edited a few goals
+		- Edited a few goals<br><br>
+	<h4>v0.1.1 NG-</h4><br>
+		- (hopefully) fixed a few bugs
 		`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`

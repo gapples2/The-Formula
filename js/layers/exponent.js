@@ -45,7 +45,7 @@ addLayer("ex", {
     hotkeys: [
         {key: "^", description: "^: Reset for Exponent-Power", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return true},
+    layerShown(){return player.a.value.gte(2)||player[this.layer].unlocked},
     displayFormula() {
         let f = "e × (-0.05) + 0.5";
         

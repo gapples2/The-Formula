@@ -68,7 +68,7 @@ addLayer("a", {
         if (hasAchievement("goals", 23)) f += " × (b ÷ 4 + 1)"
         if (hasAchievement("goals", 33)) f += " × Goals"
         if (tmp[this.layer].addedValue.gt(0)) f += " + "+format(tmp[this.layer].addedValue)
-        return "("+f+")<sup>exp</sup>";
+        return "("+f+")<sup>"+(player.ex.unlocked?"exp":"0.5")+"</sup>";
     },
     calculateValue(A=player[this.layer].points) {
         let val = A;
