@@ -40,8 +40,8 @@ function updateValue() {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.1",
-	name: "Learning Our Letters",
+	num: "0.1.1",
+	name: "No More Jacorb Balancing",
 }
 
 let changelog = `<h1>Changelog:</h1><br><br>
