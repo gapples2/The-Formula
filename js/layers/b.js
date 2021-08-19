@@ -71,12 +71,14 @@ addLayer("b", {
         let f = "B";
         if (tmp[this.layer].addedValue.gt(0)) f += " + "+format(tmp[this.layer].addedValue)
         if(player.c.unlocked) f += " × (c ÷ 2 + 1)"
+        if(buyableEffect("c",21).gt(1))f+=" × Better B"
         return "("+f+")<sup>exp</sup>";
     },
     calculateValue(B=player[this.layer].points) {
         let val = B;
         if (tmp[this.layer].addedValue.gt(0)) val = val.plus(tmp[this.layer].addedValue);
         if(player.c.unlocked)val=val.times(player.c.value.div(2).add(1))
+        val=val.times(buyableEffect("c", 21))
         return val.pow(player.ex.value);
     },
     update(diff) {
@@ -88,7 +90,7 @@ addLayer("b", {
         102: "Multiplies B-Power's boost to effective A-Power",
         103: "Divides the Avolve requirement",
     },
-    batteryLimit() { return tmp[this.layer].batteriesUnl?(hasAchievement("goals", 34)?4:2):0 },
+    batteryLimit() { return (tmp[this.layer].batteriesUnl?(hasAchievement("goals", 34)?4:2):0) },
     usedBatteries() { return Object.values(player[this.layer].grid).filter(x => x.gt(0)).length },
     grid: {
         rows() { return tmp[this.layer].batteriesUnl?(hasAchievement("goals", 34)?3:2):0 },

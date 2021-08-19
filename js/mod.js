@@ -3,7 +3,7 @@ let modInfo = {
 	id: "formula_tree_game",
 	author: "original: Jacorb90, ng-: gapples2",
 	pointsName: "time",
-	modFiles: ["layers/a.js", "layers/b.js", "layers/c.js", "layers/goals.js", "layers/exponent.js", "layers/refactor.js", "tree.js"],
+	modFiles: ["layers/a.js", "layers/b.js", "layers/c.js", "layers/d.js", "layers/goals.js", "layers/exponent.js", "layers/refactor.js", "tree.js"],
 
 	discordName: "",
 	discordLink: "",
@@ -15,8 +15,9 @@ function displayFormula() {
 	let f = "(t"
 	if (player.b.unlocked) f = "(t<sup>(b + 1)</sup>"
 
-	f += " × a)<sup>"+(player.ex.unlocked?"exp":0.5)+"</sup>";
+	f += " × a)<sup>0.5</sup>";
 	if (hasAchievement("goals", 15)) f=f.replace(")<sup>"," × Goals)<sup>");
+	if (player.c.cities.gte(1)) f=f.replace(")<sup>"," × city)<sup>")
 	return f;
 }
 
@@ -31,6 +32,7 @@ function calculateValue(t) {
 
 	let val = player.a.value.times(t);
 	if (hasAchievement("goals", 15)) val = val.times(tmp.goals.achsCompleted);
+	val = val.times(tmp.c.cityEffect)
 	return val.pow(0.5);
 }
 
@@ -40,24 +42,29 @@ function updateValue() {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.1.1",
-	name: "No More Jacorb Balancing",
+	num: "0.2",
+	name: "Construction Simulator",
 }
 
 let changelog = `<h1>Changelog:</h1><br><br>
-	<h3>v0.1 NG= - Learning Our Letters</h3><br>
+	<h3>v0.1 NG= ~ Learning Our Letters</h3><br>
 		- Set up basic stuff.<br>
 		- Implemented A-Power & Avolve<br>
 		- Implemented Goals<br>
 		- Implemented B-Power & Batteries<br>
 		- Balanced up to 19 Goals completed<br><br>
-	<h3>v0.1 NG- - No More Jacorb Balancing</h3><br>
+	<h3>v0.1 NG- ~ No More Jacorb Balancing</h3><br>
 		- Implemented Exponent-Power<br>
 		- Implemented Refactored Timespeed<br>
 		- Implemented C-Power<br>
 		- Edited a few goals<br><br>
 	<h4>v0.1.1 NG-</h4><br>
-		- (hopefully) fixed a few bugs
+		- (hopefully) fixed a few bugs<br><br>
+	<h3>v0.2 NG- ~ Construction Simulator</h3><br>
+		- Implemented Cities<br>
+		- Implemented D-Power<br>
+		- Created 5 new goals<br>
+		- Balanced up to 2 D-Power
 		`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`

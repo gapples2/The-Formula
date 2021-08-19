@@ -38,6 +38,14 @@ addLayer("goals", {
                     desc: "Unlock Batteries",
                     req: 15,
                 },
+                {
+                    desc: "Unlock Cities",
+                    req: 19
+                },
+                {
+                    desc: "Unlock D-Power",
+                    req: 23
+                }
             ],
             retrieveUnlockData() { return tmp[this.layer].buyables[11].unlockData[player[this.layer].buyables[11].toNumber()] },
             title() {
@@ -173,8 +181,38 @@ addLayer("goals", {
         41: {
             name: "Extra Nice",
             done() { return player.a.avolve.gte(69) },
-            tooltip: "Reach Avolve level 69. Reward: TBA",
+            tooltip: "Reach Avolve level 69.",
             unlocked() { return hasAchievement("goals", 34) }
+        },
+        42: {
+            name: "City Building Simulator",
+            done() { return player.c.cities.gte(10) },
+            tooltip: "Build 10 cities. Reward: Unlock city buyables.",
+            unlocked() { return tmp[this.layer].unlocks>=5 }
+        },
+        43: {
+            name: "Avolve 101",
+            done() { return player.a.avolve.gte(101) },
+            tooltip: "Reach Avolve level 101.",
+            unlocked() { return tmp[this.layer].unlocks>=5 }
+        },
+        44: {
+            name: "Is this inflation?",
+            done() { return getBuyableAmount("c", 22).gte(1) },
+            tooltip: "Get 1 free level (buyable).",
+            unlocked() { return tmp[this.layer].unlocks>=5 }
+        },
+        45: {
+            name: "C+",
+            done() { return player.c.value.gte(5) },
+            tooltip: "c(C) ≥ 5.",
+            unlocked() { return hasAchievement("goals", 42) }
+        },
+        46: {
+            name: "D?",
+            done() { return player.d.points.gte(1) },
+            tooltip: "Reach 1 D-Power.",
+            unlocked() { return tmp[this.layer].unlocks>=6 }
         },
     },
     nodeStyle: { width: "50px", height: "50px", "min-width": "50px" },
